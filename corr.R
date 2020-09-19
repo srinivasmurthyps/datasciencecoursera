@@ -4,7 +4,6 @@ corr <- function(directory, threshold = 0) {
   files_list = list.files(directory)
   files_id <- vector(mode="list", length=0)
   corr_list <- vector(mode="list", length=0)
-  print(files_list)
   count <- 1
   for (i in files_list) {
     file_num <- strsplit(i, ".csv")[[1]]
@@ -12,14 +11,12 @@ corr <- function(directory, threshold = 0) {
     df <- complete(folder, file_num)
     if (df$nobs > threshold) {
       file_name <- paste(folder, i, sep = "")
-      #print(file_name)
       df_data <- read.csv(file_name)
-      #print(df_data)
       corr_list[count] <- cor(df_data$sulfate, df_data$nitrate, use = "complete")
       count <- count + 1
     } 
   }
-  corr_df <- do.call(rbind.data.frame, corr_list)
+  corr_df <- corr_list
+  corr_df <- as.data.frame(corr_df)
   return(corr_df)
 }
-
